@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
+use Exception;
 
 /**
  * Class UserController
@@ -20,63 +21,61 @@ class UserController extends Controller
     /**
      * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return response()->json(['users' => User::all()]);
-    }
-
-    /**
-     * @return Application|Factory|View
-     */
-    public function create()
-    {
-        return view('users.create');
+        $users = User::all();
+        return response()->json(['users' => $users]);
     }
 
     /**
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        return response()->json(['user' => User::create($request->all())]);
+        $user = User::create($request->all());
+        return response()->json(['user' => $user]);
     }
 
     /**
-     * @param $user
+     * @param  User  $user
      * @return JsonResponse
      */
-    public function show($user)
+    public function show(User $user): JsonResponse
     {
-        return response()->json(['user' => User::findOrFail($user)]);
+        $user = User::findOrFail($user);
+        return response()->json(['user' => $user]);
     }
 
     /**
-     * @param $user
-     * @return Application|Factory|View
+     * @param  User  $user
+     * @return JsonResponse
      */
-    public function edit($user)
+    public function edit(User $user): JsonResponse
     {
-        return view('users.edit', ['user' => User::findOrFail($user)]);
+        $user = User::findOrFail($user);
+        return response()->json(['user' => $user]);
     }
 
     /**
      * @param  Request  $request
-     * @param $user
+     * @param  User  $user
      * @return JsonResponse
      */
-    public function update(Request $request, $user)
+    public function update(Request $request, User $user): JsonResponse
     {
-        return response()->json(['user' => User::findOrFail($user)->update($request->all())]);
+        $user = User::findOrFail($user)->update($request->all());
+        return response()->json(['user' => $user]);
     }
 
     /**
-     * @param $user
+     * @param  User  $user
      * @return Application|RedirectResponse|Redirector
+     * @throws Exception
      */
-    public function destroy($user)
+    public function destroy(User $user)
     {
-        User::destroy($user);
+        $user->delete();
         return redirect(action('UserController@index'));
     }
 }
