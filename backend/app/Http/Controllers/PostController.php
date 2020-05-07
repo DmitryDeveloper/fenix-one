@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
+use Exception;
 
 /**
  * Class PostController
@@ -20,63 +21,59 @@ class PostController extends Controller
     /**
      * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return response()->json(['posts' => Post::all()]);
-    }
-
-    /**
-     * @return Application|Factory|View
-     */
-    public function create()
-    {
-        return view('posts.create');
+        $posts = Post::all();
+        return response()->json(['posts' => $posts]);
     }
 
     /**
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        return response()->json(['post' => Post::create($request->all())]);
+        $post = Post::create($request->all());
+        return response()->json(['post' => $post]);
     }
 
     /**
-     * @param $post
+     * @param  Post  $post
      * @return JsonResponse
      */
-    public function show($post)
+    public function show(Post $post): JsonResponse
     {
-        return response()->json(['post' => Post::findOrFail($post)]);
+        return response()->json(['post' => $post]);
     }
 
     /**
-     * @param $post
-     * @return Application|Factory|View
+     * @param  Post  $post
+     * @return JsonResponse
      */
-    public function edit($post)
+    public function edit(Post $post): JsonResponse
     {
-        return view('posts.edit', ['post' => Post::findOrFail($post)]);
+        return response()->json(['post' => $post]);
     }
 
     /**
      * @param  Request  $request
-     * @param $post
+     * @param  Post  $post
      * @return JsonResponse
      */
-    public function update(Request $request, $post)
+    public function update(Request $request, Post $post): JsonResponse
     {
-        return response()->json(['post' => Post::findOrFail($post)->update($request->all())]);
+        $post->update($request->all());
+        return response()->json(['post' => $post]);
     }
 
     /**
-     * @param $post
+     * @param  Post  $post
      * @return Application|RedirectResponse|Redirector
+     * @throws Exception
      */
-    public function destroy($post)
+    public function destroy(Post $post)
     {
-        Post::destroy($post);
+        $post->delete();
         return redirect(action('PostController@index'));
     }
 }
