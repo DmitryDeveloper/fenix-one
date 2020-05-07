@@ -43,7 +43,6 @@ class UserController extends Controller
      */
     public function show(User $user): JsonResponse
     {
-        $user = User::findOrFail($user);
         return response()->json(['user' => $user]);
     }
 
@@ -53,7 +52,6 @@ class UserController extends Controller
      */
     public function edit(User $user): JsonResponse
     {
-        $user = User::findOrFail($user);
         return response()->json(['user' => $user]);
     }
 
@@ -64,7 +62,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user): JsonResponse
     {
-        $user = User::findOrFail($user)->update($request->all());
+        $user->update($request->all());
         return response()->json(['user' => $user]);
     }
 

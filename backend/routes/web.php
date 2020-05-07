@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 Route::resource('users', 'UserController');
 Route::resource('posts','PostController');
+Route::resource('categories','CategoryController');
+Route::resource('comments','CommentController');
