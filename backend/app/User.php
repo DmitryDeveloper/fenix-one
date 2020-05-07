@@ -6,8 +6,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
-use App\Post;
-use App\Comment;
 
 /**
  * Class User
@@ -16,6 +14,10 @@ use App\Comment;
 class User extends Authenticatable
 {
     use Notifiable;
+
+    const USER = 'user';
+    const MODERATOR = 'moderator';
+    const ADMINISTRATOR = 'administrator';
 
     /**
      * The attributes that are mass assignable.
