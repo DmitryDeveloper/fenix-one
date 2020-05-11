@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -28,10 +28,10 @@ class UserController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param  UserRequest  $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(UserRequest $request): JsonResponse
     {
         $user = User::create($request->all());
         return response()->json(['user' => $user]);
@@ -56,11 +56,11 @@ class UserController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param  UserRequest  $request
      * @param  User  $user
      * @return JsonResponse
      */
-    public function update(Request $request, User $user): JsonResponse
+    public function update(UserRequest $request, User $user): JsonResponse
     {
         $user->update($request->all());
         return response()->json(['user' => $user]);

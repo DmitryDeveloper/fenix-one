@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers;
 
 use App\Post;
-use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -28,10 +26,10 @@ class PostController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param  PostRequest  $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(PostRequest $request): JsonResponse
     {
         $post = Post::create($request->all());
         return response()->json(['post' => $post]);
@@ -56,11 +54,11 @@ class PostController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param  PostRequest  $request
      * @param  Post  $post
      * @return JsonResponse
      */
-    public function update(Request $request, Post $post): JsonResponse
+    public function update(PostRequest $request, Post $post): JsonResponse
     {
         $post->update($request->all());
         return response()->json(['post' => $post]);
@@ -75,5 +73,15 @@ class PostController extends Controller
     {
         $post->delete();
         return redirect(action('PostController@index'));
+    }
+
+    /**
+     * @param  Post  $post
+     * @return JsonResponse
+     */
+    public function showComments(Post $post)
+    {
+        $comments = $post->comments;
+        return response()->json(['comments' => $comments]);
     }
 }
