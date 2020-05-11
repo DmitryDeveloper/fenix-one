@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers;
 
 use App\Post;
@@ -75,5 +73,15 @@ class PostController extends Controller
     {
         $post->delete();
         return redirect(action('PostController@index'));
+    }
+
+    /**
+     * @param  Post  $post
+     * @return JsonResponse
+     */
+    public function showComments(Post $post)
+    {
+        $comments = $post->comments;
+        return response()->json(['comments' => $comments]);
     }
 }
