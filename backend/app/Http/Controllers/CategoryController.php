@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -26,10 +26,10 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param  CategoryRequest  $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(CategoryRequest $request): JsonResponse
     {
         $category = Category::create($request->all());
         return response()->json(['category' => $category]);
@@ -54,11 +54,11 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param  CategoryRequest  $request
      * @param  Category  $category
      * @return JsonResponse
      */
-    public function update(Request $request, Category $category): JsonResponse
+    public function update(CategoryRequest $request, Category $category): JsonResponse
     {
         $category->update($request->all());
         return response()->json(['category' => $category]);
