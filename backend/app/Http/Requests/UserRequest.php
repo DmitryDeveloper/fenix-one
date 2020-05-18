@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -35,7 +33,7 @@ class UserRequest extends FormRequest
             "email" => "required|email|unique:users|max:100",
             "password" => "required|string|min:5",
             "phone" => "required|integer|between:5,30",
-            "role" => "string|max:30",
+            "role" => "string|max:30"
         ];
     }
 

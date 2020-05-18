@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers;
 
 use App\Comment;
-use Illuminate\Http\Request;
+use App\Http\Requests\CommentRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -28,10 +26,10 @@ class CommentController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param  CommentRequest  $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(CommentRequest $request): JsonResponse
     {
         $comment = Comment::create($request->all());
         return response()->json(['comment' => $comment]);
@@ -56,11 +54,11 @@ class CommentController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param  CommentRequest  $request
      * @param  Comment  $comment
      * @return JsonResponse
      */
-    public function update(Request $request, Comment $comment): JsonResponse
+    public function update(CommentRequest $request, Comment $comment): JsonResponse
     {
         $comment->update($request->all());
         return response()->json(['comment' => $comment]);

@@ -4,11 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * Class PostRequest
- * @package App\Http\Requests
- */
-class PostRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,9 +24,7 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "user_id" => "required|integer",
-            "title" => "required|string|unique:posts",
-            "text" => "present|string"
+            "title" => "required|string|unique:categories",
         ];
     }
 
@@ -42,8 +36,8 @@ class PostRequest extends FormRequest
     public function messages(): array
     {
         return [
-            "title.required" => "Введите название вашей статьи",
-            "title.unique:posts" => "Уже существует статья с таким названием"
+            "title.required" => "Введите название вашей категории",
+            "title.unique:categories" => "Уже существует категория с таким названием"
         ];
     }
 }
