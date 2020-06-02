@@ -22,7 +22,7 @@ $factory->define(User::class, static function (Faker $faker) {
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
-        'password' => random_int(123453, 123456),
+        'password' => 'Q1w2e3r4t5y' . random_int(4, 6),
         'phone' => $faker->numberBetween($min = 100000000, $max = 999999999),
         'role' => 'user',
         'remember_token' => Str::random(10),
