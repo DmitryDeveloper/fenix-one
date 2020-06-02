@@ -18,13 +18,15 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'title', 'text'
+        'user_id',
+        'title',
+        'text'
     ];
 
     /**
      * @return HasMany
      */
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -32,7 +34,7 @@ class Post extends Model
     /**
      * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -40,7 +42,7 @@ class Post extends Model
     /**
      * @return BelongsToMany
      */
-    public function categories()
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }

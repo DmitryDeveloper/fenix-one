@@ -79,7 +79,7 @@ class PostController extends Controller
      * @param  Post  $post
      * @return JsonResponse
      */
-    public function showComments(Post $post)
+    public function showComments(Post $post): JsonResponse
     {
         $comments = $post->comments;
         return response()->json(['comments' => $comments]);

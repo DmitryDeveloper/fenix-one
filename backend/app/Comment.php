@@ -17,13 +17,15 @@ class Comment extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'post_id', 'text'
+        'user_id',
+        'post_id',
+        'text'
     ];
 
     /**
      * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -31,7 +33,7 @@ class Comment extends Model
     /**
      * @return BelongsTo
      */
-    public function post()
+    public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
     }
