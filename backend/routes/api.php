@@ -17,14 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register', 'AuthController@register');
+Route::post('/register', 'AuthController@register')->name('register');
 Route::post('/login', 'AuthController@login')->name('login');
-Route::post('/logout', 'AuthController@logout');
+Route::post('/logout', 'AuthController@logout')->name('logout');
 
-Route::middleware('isLogin')->group(function () {
+Route::middleware('isLogin')->group(static function () {
     Route::resource('users', 'UserController');
-    Route::resource('posts','PostController');
-    Route::get('/posts/{post}/comments','PostController@showComments');
-    Route::resource('categories','CategoryController');
-    Route::resource('comments','CommentController');
+    Route::resource('posts', 'PostController');
+    Route::get('/posts/{post}/comments', 'PostController@showComments');
+    Route::resource('categories', 'CategoryController');
+    Route::resource('comments', 'CommentController');
 });

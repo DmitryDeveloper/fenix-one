@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
+use Illuminate\Http\JsonResponse;
+use Tymon\JWTAuth\Claims\Factory;
 
+/**
+ * Class AuthController
+ * @package App\Http\Controllers
+ */
 class AuthController extends Controller
 {
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param  UserRequest  $request
+     * @return JsonResponse
      */
-    public function register(Request $request)
+    public function register(UserRequest $request): JsonResponse
     {
-        $user = User::create([
-            'email'    => $request->email,
-            'password' => $request->password,
-        ]);
+        $user = User::create($request->all());
 
         $token = auth()->login($user);
 
@@ -24,13 +27,13 @@ class AuthController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function login()
+    public function login(): JsonResponse
     {
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -38,9 +41,9 @@ class AuthController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function logout()
+    public function logout(): JsonResponse
     {
         auth()->logout();
 
@@ -49,14 +52,14 @@ class AuthController extends Controller
 
     /**
      * @param $token
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token): JsonResponse
     {
         return response()->json([
             'access_token' => $token,
-            'token_type'   => 'bearer',
-            'expires_in'   => auth()->factory()->getTTL() * 60
+            'token_type' => 'bearer',
+            'expires_in' => app(Factory::class)->getTTL() * 60
         ]);
     }
 }

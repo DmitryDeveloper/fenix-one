@@ -26,7 +26,12 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'phone', 'role'
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'phone',
+        'role'
     ];
 
     /**
@@ -35,7 +40,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -50,7 +56,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @return HasMany
      */
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
@@ -58,7 +64,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @return HasMany
      */
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -74,7 +80,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @return array
      */
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
     }
@@ -82,7 +88,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @param $value
      */
-    public function setPasswordAttribute($value)
+    public function setPasswordAttribute($value): void
     {
         $this->attributes['password'] = Hash::make($value);
     }

@@ -4,17 +4,21 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-use Exception;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
+/**
+ * Class IsLogin
+ * @package App\Http\Middleware
+ */
 class IsLogin
 {
     /**
      * Throw Exception when user is not authenticated
      *
      * @param $request
-     * @param Closure $next
+     * @param  Closure  $next
      * @return mixed
-     * @throws Exception
+     * @throws JWTException
      */
     public function handle($request, Closure $next)
     {
@@ -22,6 +26,6 @@ class IsLogin
             return $next($request);
         }
 
-        throw new Exception('You should log in system');
+        throw new JWTException('You should log in system');
     }
 }
