@@ -9,6 +9,8 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Exception;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CommentLeft;
 
 /**
  * Class PostController
@@ -83,5 +85,17 @@ class PostController extends Controller
     {
         $comments = $post->comments;
         return response()->json(['comments' => $comments]);
+    }
+
+    public function testEmail(Post $post)
+    {
+        $user = $post->user;
+        $name = $user->first_name;
+        $text = 'comment was left by ' . $name;
+        Mail::raw($text, function ($message) {
+            $message->to('ivanenkoaleksei@mail.ru');
+        });
+
+//        return response()->json('Email sent Successfully');
     }
 }
