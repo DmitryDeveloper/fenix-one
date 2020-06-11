@@ -54,6 +54,26 @@ services:
     networks:
       - app-network
 
+  #Redis Service
+  redis:
+    image: redis:6.0.5-alpine
+    container_name: redis
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "6379:6379"
+    environment:
+      SERVICE_NAME: redis
+      SERVICE_TAGS: dev
+      REDIS_HOST: 0.0.0.0
+      REDIS_PASSWORD: redis
+    command: 'redis-server'
+    volumes:
+      - redis:/data
+      - ./redis/redis.conf:/etc/redis/redis.conf
+    networks:
+      - app-network
+
 #Docker Networks
 networks:
   app-network:
@@ -62,3 +82,4 @@ networks:
 volumes:
   dbdata:
     driver: local
+  redis:
