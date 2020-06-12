@@ -93,9 +93,11 @@ class PostController extends Controller
         $name = $user->first_name;
         $text = 'comment was left by ' . $name;
         Mail::raw($text, function ($message) {
-            $message->to('ivanenkoaleksei@mail.ru');
+            $message->to('example@gmail.com');
+            $message->subject('Mailgun Testing Ba Baa');
+            $message->from('us@example.com', 'Laravel');
         });
 
-//        return response()->json('Email sent Successfully');
+       return response()->json('Email sent Successfully');
     }
 }
