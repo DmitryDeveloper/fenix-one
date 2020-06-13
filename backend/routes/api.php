@@ -25,13 +25,6 @@ Route::middleware('isLogin')->group(static function () {
     Route::resource('users', 'UserController');
     Route::resource('posts', 'PostController');
     Route::get('/posts/{post}/comments', 'PostController@showComments');
-    Route::get('/posts/{post}/test_email', 'PostController@testEmail');
     Route::resource('categories', 'CategoryController');
     Route::resource('comments', 'CommentController');
 });
-
-//Route::get('test_email', function () {
-//    Mail::raw('Sending emails with Mailgun and Laravel !', function ($message) {
-//        $message->to('ivanenkoaleksei@mail.ru');
-//    });
-//});

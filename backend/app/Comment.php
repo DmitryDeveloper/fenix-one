@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Services\MailgunService;
 
 /**
  * Class Comment
@@ -36,5 +37,27 @@ class Comment extends Model
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
+    }
+
+    /**
+     * Send the notice to author of post when somebody has left commentary
+     *
+     * @return $this
+     */
+    public function notifyAuthor(): Comment
+    {
+        $post = Post::findOrFail($this->post_id);
+        $author_post = $post->user;
+        if (!($this->user_id == $author_post->id) && $post->email_checkbox) {
+            $author_comment = User::findOrFail($this->user_id);
+            $name = "$author_comment->first_name $author_comment->last_name";
+            MailgunService::sendMessage(
+                "User $name left commentary under your post",
+                $author_comment->email,
+                $author_post->email,
+                'Notice'
+            );
+        }
+        return $this;
     }
 }
