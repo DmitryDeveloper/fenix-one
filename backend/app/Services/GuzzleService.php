@@ -28,7 +28,7 @@ class GuzzleService
     {
         try {
             $client = new Client(['timeout' => self::REQUEST_TIMEOUT]);
-            return $client->get($url, $options);
+            return self::decode($client->get($url, $options));
         } catch (GuzzleException $exception) {
             $exception->getMessage();
         }
@@ -44,7 +44,7 @@ class GuzzleService
     {
         try {
             $client = new Client(['timeout' => self::REQUEST_TIMEOUT]);
-            return $client->post($url, $options);
+            return self::decode($client->post($url, $options));
         } catch (GuzzleException $exception) {
             $exception->getMessage();
         }

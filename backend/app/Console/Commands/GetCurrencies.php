@@ -6,7 +6,7 @@ use App\Currency;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Exception\GuzzleException;
-use UnexpectedValueException;
+use App\Exceptions\CurrencyException;
 
 /**
  * Class GetCurrencies
@@ -19,20 +19,21 @@ class GetCurrencies extends Command
      *
      * @var string
      */
-    protected $signature = 'db:currencies';
+    protected $signature = 'currency:getting';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Fill currencies database';
+    protected $description = 'Update currencies table';
 
     /**
      * Execute the console command.
+     * Сommand rewrite all records in currencies table
      *
      * @throws GuzzleException
-     * @throws UnexpectedValueException
+     * @throws CurrencyException
      */
     public function handle(): void
     {
@@ -40,7 +41,7 @@ class GetCurrencies extends Command
             DB::table('currencies')->delete();
             Currency::saveCurrencies();
             $this->info('Currencies were saved!');
-        } catch (GuzzleException | UnexpectedValueException $exception) {
+        } catch (GuzzleException | CurrencyException $exception) {
             $this->error($exception->getMessage());
         }
     }

@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\GuzzleService;
 use GuzzleHttp\Exception\GuzzleException;
-use UnexpectedValueException;
+use App\Exceptions\CurrencyException;
 
 /**
  * Class Currency
@@ -30,28 +30,17 @@ class Currency extends Model
     ];
 
     /**
-     * @return bool|mixed
      * @throws GuzzleException
-     */
-    public static function getApiCurrencies()
-    {
-        if ($json_currencies = GuzzleService::get(self::CURRENCY_API)) {
-            return GuzzleService::decode($json_currencies->getBody());
-        }
-        return false;
-    }
-
-    /**
-     * @throws GuzzleException
-     * @throws UnexpectedValueException
+     * @throws CurrencyException
      */
     public static function saveCurrencies(): void
     {
-        if (!$currencies = self::getApiCurrencies()) {
-            throw new UnexpectedValueException('Was gotten not array');
+        $currencies = GuzzleService::get(self::CURRENCY_API);
+        if (!$currencies['Valute']) {
+            throw new CurrencyException("Currency wasn't gotten");
         }
         foreach ($currencies['Valute'] as $currency) {
-            $recording = new self([
+            $record = new self([
                 "currency_id" => $currency['ID'],
                 "num_code" => $currency['NumCode'],
                 "char_code" => $currency['CharCode'],
@@ -60,7 +49,7 @@ class Currency extends Model
                 "value" => $currency['Value'],
                 "past_value" => $currency['Previous']
             ]);
-            $recording->save();
+            $record->save();
         }
     }
 }
