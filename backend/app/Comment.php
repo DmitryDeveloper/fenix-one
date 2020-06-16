@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Services\MailgunService;
+use App\Services\EmailService;
 
 /**
  * Class Comment
@@ -44,17 +44,17 @@ class Comment extends Model
      *
      * @return $this
      */
-    public function notifyAuthor(): Comment
+    public function notifyAuthorAboutComment(): Comment
     {
         $post = Post::findOrFail($this->post_id);
-        $author_post = $post->user;
-        if (!($this->user_id == $author_post->id) && $post->email_checkbox) {
-            $author_comment = User::findOrFail($this->user_id);
-            $name = "$author_comment->first_name $author_comment->last_name";
-            MailgunService::sendMessage(
+        $authorPost = $post->user;
+        if (!($this->user_id == $authorPost->id) && $post->email_checkbox) {
+            $authorComment = User::findOrFail($this->user_id);
+            $name = "$authorComment->first_name $authorComment->last_name";
+            EmailService::sendMessage(
                 "User $name left commentary under your post",
-                $author_comment->email,
-                $author_post->email,
+                $authorComment->email,
+                $authorPost->email,
                 'Notice'
             );
         }

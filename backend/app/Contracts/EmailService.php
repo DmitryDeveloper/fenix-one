@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Services;
+namespace App\Contracts;
 
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Class MailgunService
- * @package App\Services
+ * Interface EmailService
+ * @package App\Contracts
  */
-class MailgunService
+interface EmailService
 {
-    public const SUCCESS = 'Message was sent Successfully';
-
     /**
      * $text    String with text your message
      * $from    Address from was sent message
@@ -30,13 +27,5 @@ class MailgunService
         string $from,
         string $to,
         string $subject
-    ): JsonResponse {
-        Mail::raw($text, function ($message) use ($from, $to, $subject) {
-            $message->from($from, 'Laravel');
-            $message->to($to);
-            $message->subject($subject);
-        });
-
-        return response()->json(self::SUCCESS);
-    }
+    ): JsonResponse;
 }

@@ -32,7 +32,7 @@ class CommentController extends Controller
     public function store(CommentRequest $request): JsonResponse
     {
         $comment = new Comment($request->all());
-        $comment->notifyAuthor()->save();
+        $comment->notifyAuthorAboutComment()->save();
         return response()->json(['comment' => $comment]);
     }
 
