@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\CreateBackupDatabase::class
+        Commands\CreateBackupDatabase::class,
+        Commands\GetCurrencies::class
     ];
 
     /**
@@ -29,6 +30,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command(Commands\CreateBackupDatabase::class)->weeklyOn(5, '21:00');
+        $schedule->command(Commands\GetCurrencies::class)->twiceDaily(8, 17);
     }
 
     /**
@@ -38,7 +40,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
