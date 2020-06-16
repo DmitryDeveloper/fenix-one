@@ -11,13 +11,14 @@ return [
     | as Mailgun, SparkPost and others. This file provides a sane default
     | location for this type of information, allowing packages to have
     | a conventional file to locate the various service credentials.
+    | mailgun email = ivanenkoaleksei17081994@gmail.com
+    | mailgun password = F1e2n3i4x5.one
     |
     */
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
-        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
     'postmark' => [
