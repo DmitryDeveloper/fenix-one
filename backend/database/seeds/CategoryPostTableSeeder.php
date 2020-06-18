@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Category;
-use App\Post;
+use App\Models\Category;
+use App\Models\Post;
 
 /**
  * Class CategoryPostTableSeeder
