@@ -55,7 +55,7 @@ class CreateBackupDatabase extends Command
             $this->info($success);
         } catch (RuntimeException | LogicException $exception) {
             $fail = "The backup process has been failed.";
-            Log::error($fail, (array)$exception);
+            Log::error($fail, (array) $exception);
             $this->error($fail);
         }
     }
@@ -69,7 +69,10 @@ class CreateBackupDatabase extends Command
     protected function checkDir($directory): void
     {
         if (!is_dir($directory) && (!mkdir($directory) && !is_dir($directory))) {
-            throw new RuntimeException(sprintf('Directory "%s" was not created', $directory));
+            throw new RuntimeException(sprintf(
+                'Directory "%s" was not created',
+                $directory
+            ));
         }
     }
 }

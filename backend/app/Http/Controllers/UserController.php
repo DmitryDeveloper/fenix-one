@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\UserService;
 use App\Http\Requests\UserRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Foundation\Application;
@@ -17,11 +18,25 @@ use Exception;
 class UserController extends Controller
 {
     /**
+     * @var UserService
+     */
+    protected $userService;
+
+    /**
+     * UserController constructor.
+     * @param  UserService  $userService
+     */
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+    /**
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $users = User::all();
+        $users = $this->userService->index();
         return response()->json(['users' => $users]);
     }
 
@@ -31,7 +46,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request): JsonResponse
     {
-        $user = User::create($request->all());
+        $user = $this->userService->store($request->all());
         return response()->json(['user' => $user]);
     }
 
@@ -60,8 +75,8 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user): JsonResponse
     {
-        $user->update($request->all());
-        return response()->json(['user' => $user]);
+        $newUser = $this->userService->update($request->all(), $user);
+        return response()->json(['user' => $newUser]);
     }
 
     /**
@@ -71,7 +86,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        $this->userService->destroy($user);
         return redirect(action('UserController@index'));
     }
 }

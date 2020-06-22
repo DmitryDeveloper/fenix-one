@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Services\UserService;
 use App\Http\Requests\UserRequest;
 use Illuminate\Http\JsonResponse;
 use Tymon\JWTAuth\Claims\Factory;
@@ -14,12 +14,26 @@ use Tymon\JWTAuth\Claims\Factory;
 class AuthController extends Controller
 {
     /**
+     * @var UserService
+     */
+    protected $userService;
+
+    /**
+     * AuthController constructor.
+     * @param  UserService  $userService
+     */
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+    /**
      * @param  UserRequest  $request
      * @return JsonResponse
      */
     public function register(UserRequest $request): JsonResponse
     {
-        $user = User::create($request->all());
+        $user = $this->userService->store($request->all());
 
         $token = auth()->login($user);
 
