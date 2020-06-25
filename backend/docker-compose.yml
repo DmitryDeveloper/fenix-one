@@ -65,9 +65,9 @@ services:
     environment:
       SERVICE_NAME: redis
       SERVICE_TAGS: dev
-      REDIS_HOST: 0.0.0.0
+      REDIS_HOST: redis
       REDIS_PASSWORD: redis
-    command: 'redis-server'
+    command: 'redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"'
     volumes:
       - redis:/data
       - ./redis/redis.conf:/etc/redis/redis.conf
