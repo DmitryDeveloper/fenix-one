@@ -28,3 +28,5 @@ Route::middleware('isLogin')->group(static function () {
     Route::resource('categories', 'CategoryController');
     Route::resource('comments', 'CommentController');
 });
+
+Route::get('currencies', 'CurrencyController@index');

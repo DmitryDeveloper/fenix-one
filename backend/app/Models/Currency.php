@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class Currency
@@ -24,4 +25,12 @@ class Currency extends Model
         'value',
         'past_value'
     ];
+
+    /**
+     * @return Currency[]|Collection
+     */
+    public function getAll()
+    {
+        return self::all();
+    }
 }
