@@ -22,9 +22,8 @@ class CommentService
      * CommentService constructor.
      * @param  Comment  $comment
      */
-    public function __construct(
-        Comment $comment
-    ) {
+    public function __construct(Comment $comment)
+    {
         $this->comment = $comment;
     }
 
@@ -72,9 +71,9 @@ class CommentService
      * Send the notice to author of post when somebody has left commentary
      *
      * @param $comment
-     * @return CommentService
+     * @return bool
      */
-    public function notifyAuthorAboutComment($comment): CommentService
+    public function notifyAuthorAboutComment($comment): bool
     {
         $post = $comment->post;
         if ($post->email_checkbox) {
@@ -88,8 +87,9 @@ class CommentService
                     $authorPost->email,
                     'Notice'
                 );
+                return true;
             }
         }
-        return $this;
+        return false;
     }
 }

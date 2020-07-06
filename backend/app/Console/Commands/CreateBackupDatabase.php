@@ -66,7 +66,7 @@ class CreateBackupDatabase extends Command
      * @param $directory
      * @throws RuntimeException
      */
-    protected function checkDir($directory): void
+    protected function checkDir(string $directory): void
     {
         if (!is_dir($directory) && (!mkdir($directory) && !is_dir($directory))) {
             throw new RuntimeException(sprintf(
