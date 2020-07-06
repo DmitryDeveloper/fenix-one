@@ -9,64 +9,42 @@ namespace App\Contracts;
 interface ICacheService
 {
     /**
-     * @param $key
-     * @param $value
-     */
-    public function append($key, $value);
-
-    /**
+     * Removes the specified keys. A key is ignored if it does not exist.
+     *
      * @param  array  $keys
      */
     public function del(array $keys);
 
     /**
+     *  Count the number of keys existing among a given list of keys.
+     *
      * @param  array  $keys
      */
     public function exists(array $keys);
 
     /**
-     * @param $key
-     * @param  int  $ttl
+     * Delete all the keys of all the existing databases, not just the currently selected one.
      */
-    public function expire($key, int $ttl);
-
-    /**
-     * @param $key
-     * @param  int  $ttl
-     */
-    public function expireat($key, int $ttl);
-
     public function flushAll();
 
-    public function flushDb();
-
     /**
+     * Return the value of key, or nil when key does not exist.
+     *
      * @param  $key
      */
     public function get($key);
 
     /**
-     * @param  $key
-     */
-    public function getSet($key);
-
-    /**
-     * @param  array  $keys
-     */
-    public function mGet(array $keys);
-
-    /**
-     * @param  array  $associative
-     */
-    public function mSet(array $associative);
-
-    /**
+     * Rename key to newkey. It returns an error when key does not exist.
+     *
      * @param $key
      * @param $newkey
      */
     public function rename($key, $newkey);
 
     /**
+     * Set key to hold the string value.
+     *
      * @param $key
      * @param $value
      */
