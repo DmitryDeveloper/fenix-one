@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Services\CategoryService;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Foundation\Application;
@@ -17,11 +18,25 @@ use Exception;
 class CategoryController extends Controller
 {
     /**
+     * @var CategoryService
+     */
+    protected $categoryService;
+
+    /**
+     * CategoryController constructor.
+     * @param  CategoryService  $categoryService
+     */
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
+    /**
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $categories = Category::all();
+        $categories = $this->categoryService->index();
         return response()->json(['categories' => $categories]);
     }
 
@@ -31,7 +46,7 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request): JsonResponse
     {
-        $category = Category::create($request->all());
+        $category = $this->categoryService->store($request->all());
         return response()->json(['category' => $category]);
     }
 
@@ -60,8 +75,8 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category): JsonResponse
     {
-        $category->update($request->all());
-        return response()->json(['category' => $category]);
+        $newCategory = $this->categoryService->update($request->all(), $category);
+        return response()->json(['category' => $newCategory]);
     }
 
     /**
@@ -71,7 +86,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
+        $this->categoryService->destroy($category);
         return redirect(action('CategoryController@index'));
     }
 }

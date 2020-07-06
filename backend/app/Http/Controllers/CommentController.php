@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Services\CommentService;
 use App\Http\Requests\CommentRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Foundation\Application;
@@ -17,11 +18,25 @@ use Exception;
 class CommentController extends Controller
 {
     /**
+     * @var CommentService
+     */
+    protected $commentService;
+
+    /**
+     * CategoryController constructor.
+     * @param  CommentService  $commentService
+     */
+    public function __construct(CommentService $commentService)
+    {
+        $this->commentService = $commentService;
+    }
+
+    /**
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $comments = Comment::all();
+        $comments = $this->commentService->index();
         return response()->json(['comments' => $comments]);
     }
 
@@ -31,8 +46,8 @@ class CommentController extends Controller
      */
     public function store(CommentRequest $request): JsonResponse
     {
-        $comment = new Comment($request->all());
-        $comment->notifyAuthorAboutComment()->save();
+        $comment = $this->commentService->store($request->all());
+        $this->commentService->notifyAuthorAboutComment($comment);
         return response()->json(['comment' => $comment]);
     }
 
@@ -61,8 +76,8 @@ class CommentController extends Controller
      */
     public function update(CommentRequest $request, Comment $comment): JsonResponse
     {
-        $comment->update($request->all());
-        return response()->json(['comment' => $comment]);
+        $newComment = $this->commentService->update($request->all(), $comment);
+        return response()->json(['comment' => $newComment]);
     }
 
     /**
@@ -72,7 +87,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        $comment->delete();
+        $this->commentService->destroy($comment);
         return redirect(action('CommentController@index'));
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Services\EmailService;
 
 /**
  * Class Comment
@@ -40,24 +41,48 @@ class Comment extends Model
     }
 
     /**
-     * Send the notice to author of post when somebody has left commentary
-     *
+     * @return Comment[]|Collection
+     */
+    public function getAll()
+    {
+        return self::all();
+    }
+
+    /**
+     * @param  mixed  $id
+     * @param  array  $columns
+     * @return Comment[]|Collection
+     */
+    public function get($id, $columns = ['*'])
+    {
+        return self::findOrFail($id, $columns);
+    }
+
+    /**
+     * @param $request
+     * @return mixed
+     */
+    public function store($request)
+    {
+        return self::create($request);
+    }
+
+    /**
+     * @param $request
      * @return $this
      */
-    public function notifyAuthorAboutComment(): Comment
+    public function upgrade($request): self
     {
-        $post = Post::findOrFail($this->post_id);
-        $authorPost = $post->user;
-        if (!($this->user_id == $authorPost->id) && $post->email_checkbox) {
-            $authorComment = User::findOrFail($this->user_id);
-            $name = "$authorComment->first_name $authorComment->last_name";
-            EmailService::sendMessage(
-                "User $name left commentary under your post",
-                $authorComment->email,
-                $authorPost->email,
-                'Notice'
-            );
-        }
+        $this->update($request);
         return $this;
+    }
+
+    /**
+     * @return bool|null
+     * @throws Exception
+     */
+    public function remove(): ?bool
+    {
+        return $this->delete();
     }
 }

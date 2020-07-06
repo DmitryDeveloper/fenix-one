@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Services\PostService;
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Foundation\Application;
@@ -17,11 +18,25 @@ use Exception;
 class PostController extends Controller
 {
     /**
+     * @var PostService
+     */
+    protected $postService;
+
+    /**
+     * PostController constructor.
+     * @param  PostService  $postService
+     */
+    public function __construct(PostService $postService)
+    {
+        $this->postService = $postService;
+    }
+
+    /**
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $posts = Post::all();
+        $posts = $this->postService->index();
         return response()->json(['posts' => $posts]);
     }
 
@@ -31,7 +46,7 @@ class PostController extends Controller
      */
     public function store(PostRequest $request): JsonResponse
     {
-        $post = Post::create($request->all());
+        $post = $this->postService->store($request->all());
         return response()->json(['post' => $post]);
     }
 
@@ -60,8 +75,8 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post): JsonResponse
     {
-        $post->update($request->all());
-        return response()->json(['post' => $post]);
+        $newPost = $this->postService->update($request->all(), $post);
+        return response()->json(['post' => $newPost]);
     }
 
     /**
@@ -71,7 +86,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        $post->delete();
+        $this->postService->destroy($post);
         return redirect(action('PostController@index'));
     }
 
