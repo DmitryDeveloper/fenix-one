@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendEmails;
 use App\Models\Comment;
 use App\Services\CommentService;
 use App\Http\Requests\CommentRequest;
@@ -47,7 +48,7 @@ class CommentController extends Controller
     public function store(CommentRequest $request): JsonResponse
     {
         $comment = $this->commentService->store($request->all());
-        $this->commentService->notifyAuthorAboutComment($comment);
+        SendEmails::dispatch($comment)->onQueue('emails');
         return response()->json(['comment' => $comment]);
     }
 

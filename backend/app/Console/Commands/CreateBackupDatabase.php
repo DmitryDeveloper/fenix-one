@@ -63,7 +63,7 @@ class CreateBackupDatabase extends Command
     /**
      * Check existence of directory. If directory doesn't exist will create one.
      *
-     * @param $directory
+     * @param  string  $directory
      * @throws RuntimeException
      */
     protected function checkDir(string $directory): void
