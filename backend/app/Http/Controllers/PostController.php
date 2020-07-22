@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Services\PostService;
+use App\Services\FileService;
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Foundation\Application;
@@ -23,12 +24,21 @@ class PostController extends Controller
     protected $postService;
 
     /**
+     * @var FileService
+     */
+    protected $fileService;
+
+    /**
      * PostController constructor.
      * @param  PostService  $postService
+     * @param  FileService  $fileService
      */
-    public function __construct(PostService $postService)
-    {
+    public function __construct(
+        PostService $postService,
+        FileService $fileService
+    ) {
         $this->postService = $postService;
+        $this->fileService = $fileService;
     }
 
     /**
@@ -47,6 +57,7 @@ class PostController extends Controller
     public function store(PostRequest $request): JsonResponse
     {
         $post = $this->postService->store($request->all());
+        $this->fileService->storeImage($request, 'posts', $post->id);
         return response()->json(['post' => $post]);
     }
 
@@ -56,7 +67,8 @@ class PostController extends Controller
      */
     public function show(Post $post): JsonResponse
     {
-        return response()->json(['post' => $post]);
+        $image = $this->fileService->getImage('posts', $post->id);
+        return response()->json(['post' => $post, 'image' => $image]);
     }
 
     /**

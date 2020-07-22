@@ -27,9 +27,10 @@ class PostRequest extends FormRequest
      */
     public function rules(): array
     {
+        $unique = in_array($this->method(), ["PUT", "PATCH"]) ? '' : '|unique:posts';
         return [
             "user_id" => "required|integer",
-            "title" => "required|string|unique:posts",
+            "title" => "required|string$unique",
             "text" => "present|string"
         ];
     }

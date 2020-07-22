@@ -27,8 +27,9 @@ class CategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+        $unique = in_array($this->method(), ["PUT", "PATCH"]) ? '' : '|unique:categories';
         return [
-            "title" => "required|string|unique:categories",
+            "title" => "required|string$unique",
         ];
     }
 

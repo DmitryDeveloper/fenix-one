@@ -27,10 +27,11 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $unique = in_array($this->method(), ["PUT", "PATCH"]) ? '' : '|unique:users';
         return [
             "first_name" => "required|alpha_dash|max:25",
             "last_name" => "required|alpha_dash|max:40",
-            "email" => "required|email|unique:users|max:100",
+            "email" => "required|email$unique|max:100",
             "password" => "required|string|min:5",
             "phone" => "required|string|between:5,30",
             "role" => "string|max:30"
