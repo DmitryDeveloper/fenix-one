@@ -187,4 +187,18 @@ class RedisService implements ICacheService
     {
         return Redis::set($key, $value);
     }
+
+    /**
+     * Insert all the specified values at the tail of the list stored at key.
+     * If key does not exist, it is created as empty list before performing the push operation.
+     * When key holds a value that is not a list, an error is returned.
+     *
+     * @param $list
+     * @param $value
+     * @return mixed
+     */
+    public function rPush($list, $value)
+    {
+        return Redis::rPush($list, $value);
+    }
 }

@@ -31,13 +31,17 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function index(): JsonResponse
+
+    public function index()
     {
         $categories = $this->categoryService->index();
-        return response()->json(['categories' => $categories]);
+        dd($categories);
+//        dd($categories->toArray());
+//        foreach ($categories as $category) {
+//            dd($category);
+//        }
+
+       // return response()->json(['categories' => $categories]);
     }
 
     /**

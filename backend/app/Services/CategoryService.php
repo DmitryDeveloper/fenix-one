@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Exception;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Class CategoryService
@@ -19,20 +20,34 @@ class CategoryService
     private $category;
 
     /**
-     * CategoryService constructor.
-     * @param  Category  $category
+     * @var RedisService
      */
-    public function __construct(Category $category)
-    {
-        $this->category = $category;
-    }
+    private $redisService;
 
     /**
-     * @return Category[]|Collection
+     * CategoryService constructor.
+     * @param  Category  $category
+     * @param  RedisService  $redisService
      */
+    public function __construct(
+        Category $category,
+        RedisService $redisService
+    ) {
+        $this->category = $category;
+        $this->redisService = $redisService;
+    }
+
+
     public function index()
     {
-        return $this->category->getAll();
+        $res = Redis::connection();
+
+        //$res = $this->redisService->get('qqq');
+        //$res = $this->redisService->flushAll();
+
+        return $res->get('qqq');
+
+        //return $this->category->getAll();
     }
 
     /**
